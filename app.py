@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 from pydantic import BaseModel, Field, computed_field
 from typing import Literal, Annotated
 import pickle
@@ -65,6 +65,13 @@ class UserInput(BaseModel):
              return 3
 
 # defination of apis
+
+@app.get("/", response_class=HTMLResponse)
+def read_root():
+    return """
+    <h2>Welcome to the Insurance Premium Prediction API</h2>
+    <p>Use the <code>/predict</code> endpoint to make predictions.</p>
+    """
 @app.post('/predict')
 def predict_premium(data: UserInput):
     input_df=pd.DataFrame([{
